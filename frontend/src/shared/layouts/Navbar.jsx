@@ -1,0 +1,163 @@
+import { Search, User } from "lucide-react";
+import { Link } from "react-router-dom"
+import { IconButton, Dropdown, DropdownTrigger, DropdownContent ,DropdownItem, Switch, SearchField } from "@/shared";
+import logo from "@/assets/images/logo-1.png"
+import { useState } from "react";
+import { logout } from "@/features/auth/services/logoutService.js";
+import { useNavigate } from "react-router-dom";
+
+export default function Navbar(){
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/auth")
+    };
+    
+    // Componente de busqueda
+    const [search, setSearch] = useState("");
+
+    const handleSearch = (value) => {
+        console.log("Buscar", value);
+    };
+
+    const handleClear = () => {
+        console.log("Campo limpiado");
+    }
+
+    // Estado que controla el switch
+    const [isActive, setIsActive] = useState(true);
+
+    // Manejador del estado del switch
+    const handleStatusChange = (value) => {
+        setIsActive(value);
+
+        // Aqui generalmente va el llamado a una API
+        console.log("Nuevo estado", value);
+        
+    }
+
+    return(
+        <nav className="w-full border-b-2 bg-transparent">
+
+            {/* Esta es la caja grande */}
+            <div className="mx-auto max-w-7xl px-4">
+
+                {/* Esta es la caja que dentro de la primera caja */}
+                <div className="flex h-16 items-center justify-between">
+
+                    {/* Este logo esta dentro de la segunda caja */}
+                    <div className="flex items-center">
+                        <Link className="text-h1 font-heading hidden sm:inline-flex   ">
+                            <img src={logo} alt="" className="h-12" />
+                        </Link>
+                    </div>
+
+                    {/* SWITCHHHHHHHHHHHHHHHHH */}
+                    <Switch
+                        checked={isActive}
+                        onChange={handleStatusChange}
+                        size="md"
+                        className= "hidden sm:inline-flex"
+                    />
+
+                    {/* Links de navegación */}
+                    <ul className="hidden md:flex items-center gap-6">
+                        <li>
+                            <Link to={"/inicio"} className="hover:text-primary transition">Inicio</Link>
+                        </li>
+
+                        <li>
+                            <Link to={"/cursos"} className="hover:text-primary transition">Cursos</Link>
+                        </li>
+
+                        <li>
+                            <Link to={"/fotos"} className="hover:text-primary transition">Fotos</Link>
+                        </li>
+
+                        <li>
+                            <Link to={"/lavadora"} className="hover:text-primary transition">Lavadora</Link>
+                        </li>
+                    </ul>
+
+                    <SearchField
+                        value={search}
+                        onChange={setSearch}
+                        onSubmit={handleSearch}
+                        onClear={handleClear}
+                        placeholder="Buscar productos..."
+                        size="md"
+                        variant="outlined"
+                        className="w-76"
+                    />
+
+                    {/* Seccion de la derecha: busqueda + usuario */}
+                    <div className="flex items-center gap-4">
+                            {/* Icono de Buscador */}
+                        <div className="relative hidden sm:block">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500"/>
+                        
+                            {/* Input */}
+                        {/* <input
+                            type="text"
+                            placeholder="Buscar en mileroticos"
+                            className="pl-9 pr-4 py-2.5 border rounded-lg text-body focus:outline-none focus:ring-2 focus:ring-text-primary"
+                        /> */}
+                        </div>
+
+                            {/* Icono del usuario */}
+                        {/* <button>
+                            <IconButton ariaLabel="Menú de usuario">
+                                <User/>
+                            </IconButton>
+                        </button> */}
+
+                        <div className="p-10">
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <IconButton ariaLabel="Menú de usuario">
+                                        <User/>
+                                    </IconButton>
+                                </DropdownTrigger>
+
+                                <DropdownContent className="right-0 w-48">
+                                    <DropdownItem>
+                                        <Link to="/auth" className="block w-full">
+                                            Autenticación
+                                        </Link>
+                                    </DropdownItem>
+
+                                    <DropdownItem>
+                                        <Link to="/dashboard" className="block w-full">
+                                            Panel de control
+                                        </Link>
+                                    </DropdownItem>
+
+                                    <DropdownItem onClick={handleLogout}>
+                                        <Link to="/dashboard/auth" className="block w-full">
+                                            Cerrar sesión
+                                        </Link>
+                                    </DropdownItem>
+
+                                    <DropdownItem>
+                                        <Link to="/dashboard/UserList" className="block w-full">
+                                            Gestionar usuarios
+                                        </Link>
+                                    </DropdownItem>
+                                    <DropdownItem>
+                                        <Link to="/dashboard/access" className="block w-full">
+                                            Admin
+                                        </Link>
+                                    </DropdownItem>
+
+
+                                </DropdownContent>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    )
+}
