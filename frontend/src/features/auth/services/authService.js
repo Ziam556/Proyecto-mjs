@@ -1,7 +1,9 @@
-const API_URL = "http://localhost:4000/api/auth";
+import { API_URL } from "../../config";
+
+const AUTH_API_URL = `${API_URL}/auth`;
 
 export async function login(userData) {
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await fetch(`${AUTH_API_URL}/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
