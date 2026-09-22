@@ -55,7 +55,7 @@ export default function LoginForm() {
         <div className="flex flex-col justify-center h-screen">
             {/* fix 2: "2x1" → "2xl" */}
             <h1 className="text-text-primary text-2xl mb-6 text-center">
-                Registro de Usuarios
+                Registro de Sebas
             </h1>
 
             <form
